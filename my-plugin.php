@@ -103,7 +103,16 @@ $path_style = plugins_url('css/style.css', __FILE__);
 $ver_style = filemtime(plugin_dir_path(__FILE__).'css/style.css');
 wp_enqueue_style('my-custom-style', $path_style, '' , $ver_style);
 
+
+/*
+if(is_page('home')){
+
+    wp_add_inline_script('my-custom-js', 'var is_login = '.$is_login.';', 'before');
 }
+*/
+
+}
+
 
 add_action('wp_enqueue_scripts', 'my_custom_scripts');
 
