@@ -64,7 +64,7 @@ register_deactivation_hook(__FILE__, 'my_plugin_deactivation');
 // This function for short code
 function my_sc_fun($atts){
 
-$atts = array_change_key_case($atts, CASE_LOWER);
+$atts = array_change_key_case((array)$atts, CASE_LOWER);
 
 $atts = shortcode_atts(array(
       'msg' => 'i am Good'
@@ -110,9 +110,55 @@ if(is_page('home')){
     wp_add_inline_script('my-custom-js', 'var is_login = '.$is_login.';', 'before');
 }
 */
-
+ 
 }
-
 
 add_action('wp_enqueue_scripts', 'my_custom_scripts');
 
+
+
+// This function for short code table printing
+function my_fun(){
+
+    global $wpdb, $table_prefix;
+    $Custom_emp = $table_prefix.'emp';
+
+    $q ="SELECT * FROM `$Custom_emp`;";
+    $results = $wpdb->get_results($q);
+
+  ob_start()
+  ?>
+<table>
+<thead>
+    <tr>
+        <th>ID</th>
+        <th>NAME</th>
+        <th>EMAIL</th>
+        <th>STATUS</th>
+
+    </tr>
+</thead>
+ <tbody>
+    <?php 
+       foreach($results as $row){
+    
+    ?>
+    <tr>
+        <td><?php echo $row->id ?></td>
+        <td><?php echo $row->name ?></td>
+        <td><?php echo $row->email ?></td>
+        <td><?php echo $row->status ?></td>
+
+    </tr>
+    <?php }  ?>
+ </tbody>
+
+
+</table>
+  <?php
+
+    // print_r($results);
+    }
+    
+    add_shortcode('my-funs', 'my_fun');
+    
