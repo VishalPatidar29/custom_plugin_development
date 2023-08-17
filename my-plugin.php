@@ -126,8 +126,9 @@ function my_fun(){
     $q ="SELECT * FROM `$Custom_emp`;";
     $results = $wpdb->get_results($q);
 
-  ob_start()
+  ob_start();
   ?>
+  <h1>This Table is for Demo Pusrpose : </h1>
 <table>
 <thead>
     <tr>
@@ -155,10 +156,54 @@ function my_fun(){
 
 
 </table>
-  <?php
 
+  <?php
+  $html = ob_get_clean();
+ return $html;
     // print_r($results);
     }
+
+ add_shortcode('my-funs', 'my_fun');
+
+
+
+// This function for print the post 
+
+function my_posts(){
+
+    $args[] = array(
+
+        'post_type' => 'post'
+    );
+
+$query = new WP_Query($args);
+
+ob_start();
+if($query->have_posts()){
+
+?>
+<ul>
+    <?php 
+    while($query->have_posts()){
+
+        $query->the_post();
+        echo '<h1>The Demo Post: </h1>';
+        echo '<li>'.the_post_thumbnail().''.get_the_title().'->'.get_the_content().' </li>';
+    }
     
-    add_shortcode('my-funs', 'my_fun');
+    
+    ?>
+
+</ul>
+
+
+<?php
+}
+wp_reset_postdata();
+
+$html = ob_get_clean();
+
+return $html;
+}
+add_shortcode('my-post', 'my_posts');
     
